@@ -91,13 +91,18 @@ func _exit_tree() -> void:
 	remove_control_from_bottom_panel(editor_panel_instance)
 	editor_panel_instance.queue_free()
 #	if framed_viewfinder_panel_instance:
-	scene_changed.disconnect(_scene_changed)
+
+	if is_instance_valid(scene_changed):
+		scene_changed.disconnect(_scene_changed)
 
 	remove_autoload_singleton(PHANTOM_CAMERA_MANAGER)
 
-	panel_button.toggled.disconnect(_btn_toggled)
-	scene_changed.disconnect(editor_panel_instance.viewfinder.scene_changed)
-	scene_changed.disconnect(_scene_changed)
+	if is_instance_valid(panel_button):
+		panel_button.toggled.disconnect(_btn_toggled)
+
+	if is_instance_valid(scene_changed):
+		scene_changed.disconnect(editor_panel_instance.viewfinder.scene_changed)
+		scene_changed.disconnect(_scene_changed)
 
 #func _has_main_screen():
 #	return true;
