@@ -620,8 +620,17 @@ func _follow(delta: float) -> void:
 							bounds = bounds.expand(node.global_position)
 
 					var distance: float
+					# Get the lengths along the x and y axes
+					var x_axis_length = bounds.size.x
+					var y_axis_length = bounds.size.y
+
+					var viewport = get_viewport().get_visible_rect()
+					# Adjust the x length based on the camera's aspect ratio
+					var aspect_ratio = viewport.size.x / viewport.size.y
+					x_axis_length /= aspect_ratio
+
 					if auto_follow_distance:
-						distance = lerp(auto_follow_distance_min, auto_follow_distance_max, bounds.get_longest_axis_size() / auto_follow_distance_divisor)
+						distance = lerp(auto_follow_distance_min, auto_follow_distance_max, max(x_axis_length, y_axis_length) / auto_follow_distance_divisor)
 						distance = clamp(distance, auto_follow_distance_min, auto_follow_distance_max)
 					else:
 						distance = follow_distance
