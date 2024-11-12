@@ -193,6 +193,9 @@ func _check_camera_host_amount() -> void:
 func _assign_new_active_pcam(pcam: Node) -> void:
 	var no_previous_pcam: bool
 
+	if not is_instance_valid(camera_3d) or not camera_3d.is_inside_tree():
+		return
+
 	if is_instance_valid(_active_pcam_2d) or is_instance_valid(_active_pcam_3d):
 		if _is_2D:
 			_prev_active_pcam_2d_transform = camera_2d.get_global_transform()
