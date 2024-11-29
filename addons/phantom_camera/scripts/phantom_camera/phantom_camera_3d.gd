@@ -621,8 +621,17 @@ func _follow(delta: float) -> void:
 
 					var distance: float
 					if auto_follow_distance:
-						distance = lerp(auto_follow_distance_min, auto_follow_distance_max, bounds.get_longest_axis_size() / auto_follow_distance_divisor)
-						distance = clamp(distance, auto_follow_distance_min, auto_follow_distance_max)
+						var viewport_size = get_viewport().get_visible_rect().size
+						var x_size = bounds.size.x
+						var y_size = bounds.size.y
+
+						if viewport_size.x > viewport_size.y:
+							x_size *= viewport_size.y / viewport_size.x
+						elif viewport_size.y > viewport_size.x:
+							y_size *= viewport_size.x / viewport_size.y
+
+						var longest = max(x_size, y_size)
+						distance = clamp(longest / auto_follow_distance_divisor, auto_follow_distance_min, auto_follow_distance_max)
 					else:
 						distance = follow_distance
 
